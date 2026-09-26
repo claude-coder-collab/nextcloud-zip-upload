@@ -46,12 +46,37 @@ function readAllDirectoryEntries(directoryEntry) {
  * Extracts the top-level `FileSystemEntry` objects from a drop event's
  * DataTransfer, ignoring any dragged items that aren't files/folders.
  *
+ * Falls back to the plain `File` behind an item when `webkitGetAsEntry()`
+ * isn't available or returns null - which is the case for individual files
+ * dropped in some browsers, and always the case for `File` objects added to
+ * a `DataTransfer` programmatically (there's no way to fabricate a real
+ * `FileSystemDirectoryEntry` outside of an actual OS-level drag, so this is
+ * also how synthetic drops - e.g. in tests - end up being handled). The
+ * fallback only ever produces flat files, never directories.
+ *
  * @param {DataTransfer} dataTransfer
  * @returns {FileSystemEntry[]}
  */
 export function getDroppedEntries(dataTransfer) {
     return Array.from(dataTransfer.items)
         .filter((item) => item.kind === 'file')
-        .map((item) => item.webkitGetAsEntry())
+        .map((item) => (typeof item.webkitGetAsEntry === 'function' && item.webkitGetAsEntry()) || fileEntryFromItem(item))
         .filter((entry) => entry !== null);
+}
+
+/**
+ * @param {DataTransferItem} item
+ * @returns {FileSystemEntry|null}
+ */
+function fileEntryFromItem(item) {
+    const file = item.getAsFile();
+    if (!file) {
+        return null;
+    }
+    return {
+        name: file.name,
+        isDirectory: false,
+        isFile: true,
+        file: (successCallback) => successCallback(file),
+    };
 }

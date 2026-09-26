@@ -7,13 +7,11 @@ import os from 'node:os';
 // NOTE on scope: real OS-level "drag a folder from your file manager" cannot
 // be simulated through the DOM DataTransfer API - a FileSystemDirectoryEntry
 // can only be produced by the browser from an actual drag off the host
-// filesystem. This test instead drops several in-memory `File` objects
-// (which Chromium *does* expose through `webkitGetAsEntry()` as
-// FileSystemFileEntry instances), which exercises the exact same code path
-// for filtering, zipping and uploading. The recursive directory-walking
-// logic itself is covered separately by the traverse.js unit tests, and
-// src/zip/domEntryAdapter.js - the only piece not exercised here - is a thin,
-// deliberately dumb wrapper around the native FileSystemEntry API.
+// filesystem. This test instead drops several in-memory `File` objects;
+// `webkitGetAsEntry()` returns null for those (see domEntryAdapter.js's
+// fallback), so this exercises that fallback plus the full filter/zip/upload
+// pipeline for flat files. The recursive directory-walking logic itself is
+// covered separately by the traverse.js unit tests.
 
 const ADMIN_USER = process.env.NEXTCLOUD_ADMIN_USER || 'admin';
 const ADMIN_PASSWORD = process.env.NEXTCLOUD_ADMIN_PASSWORD || 'admin';

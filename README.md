@@ -90,10 +90,11 @@ docker compose -f e2e/docker-compose.yml down -v
 
 Real OS-level folder drag-and-drop can't be produced through the DOM
 `DataTransfer` API outside of an actual drag off the host filesystem, so the
-e2e test drops several in-memory `File` objects instead (Chromium still
-routes these through `webkitGetAsEntry()` as real `FileSystemFileEntry`
-instances, exercising the same filter/zip/upload code path). The recursive
-directory-walking logic itself is covered by the `traverse.js` unit tests.
+e2e test drops several in-memory `File` objects instead. `webkitGetAsEntry()`
+returns null for those, so this exercises the plain-`File` fallback in
+[`domEntryAdapter.js`](src/zip/domEntryAdapter.js) plus the full
+filter/zip/upload pipeline for flat files. The recursive directory-walking
+logic itself is covered by the `traverse.js` unit tests.
 
 ## License
 
