@@ -2,6 +2,7 @@ node_modules/
 js/
 vendor/
 build/
+dist/
 coverage/
 .DS_Store
 *.log
