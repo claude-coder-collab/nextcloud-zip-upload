@@ -27,14 +27,22 @@ jobs:
       - name: Start Nextcloud
         run: docker compose -f e2e/docker-compose.yml up -d
 
+      - name: Debug mount permissions
+        run: |
+          sleep 3
+          docker compose -f e2e/docker-compose.yml exec -T nextcloud id www-data
+          docker compose -f e2e/docker-compose.yml exec -T nextcloud stat /var/www/html/custom_apps
+          docker compose -f e2e/docker-compose.yml exec -T nextcloud stat /var/www/html/custom_apps/zip_upload
+          docker compose -f e2e/docker-compose.yml exec -T nextcloud ls -la /var/www/html/custom_apps/
+
       - name: Wait for Nextcloud to be ready
         run: |
-          for i in $(seq 1 60); do
+          for i in $(seq 1 10); do
             if curl -sf http://localhost:8080/status.php > /dev/null; then
               echo "Nextcloud is up"
               exit 0
             fi
-            sleep 5
+            sleep 2
           done
           echo "Nextcloud did not become ready in time" >&2
           docker compose -f e2e/docker-compose.yml logs
