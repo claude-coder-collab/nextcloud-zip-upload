@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>zip_upload</id>
+    <name>Zip Upload</name>
+    <summary>Drag a folder in, get it zipped (stored, uncompressed) and uploaded as a single file.</summary>
+    <description><![CDATA[Drag and drop a folder onto the Zip Upload page and it will be
+packed into a single, uncompressed (store-only) zip archive entirely in your
+browser, then uploaded to a folder of your choice. Hidden files, WaveCache.wfm
+files, *.bak.???.ptx files and empty folders are excluded by default, and the
+exclusion rules can be edited before each upload.]]></description>
+    <version>0.1.0</version>
+    <licence>mit</licence>
+    <author mail="333922006+claude-coder-collab@users.noreply.github.com" homepage="https://github.com/claude-coder-collab/nextcloud-zip-upload">claude-coder-collab</author>
+    <namespace>ZipUpload</namespace>
+    <category>files</category>
+    <website>https://github.com/claude-coder-collab/nextcloud-zip-upload</website>
+    <bugs>https://github.com/claude-coder-collab/nextcloud-zip-upload/issues</bugs>
+    <repository type="git">https://github.com/claude-coder-collab/nextcloud-zip-upload.git</repository>
+    <dependencies>
+        <nextcloud min-version="28" max-version="31"/>
+    </dependencies>
+    <navigations>
+        <navigation>
+            <id>zip_upload</id>
+            <name>Zip Upload</name>
+            <route>zip_upload.page.index</route>
+            <icon>app.svg</icon>
+        </navigation>
+    </navigations>
+</info>
