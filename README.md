@@ -83,7 +83,7 @@ path:
 npm run build   # produces js/, which gets baked into the image below
 docker compose -f e2e/docker-compose.yml up -d --build
 # wait for http://localhost:8080/status.php to respond, then:
-docker compose -f e2e/docker-compose.yml exec nextcloud php occ app:enable zip_upload
+docker compose -f e2e/docker-compose.yml exec -u www-data nextcloud php occ app:enable zip_upload
 npm run test:e2e
 docker compose -f e2e/docker-compose.yml down -v
 ```

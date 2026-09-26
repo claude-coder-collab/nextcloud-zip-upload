@@ -41,7 +41,7 @@ jobs:
           exit 1
 
       - name: Enable the app
-        run: docker compose -f e2e/docker-compose.yml exec -T nextcloud php occ app:enable zip_upload
+        run: docker compose -f e2e/docker-compose.yml exec -T -u www-data nextcloud php occ app:enable zip_upload
 
       - name: Run Playwright tests
         run: npm run test:e2e
